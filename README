@@ -1,5 +1,5 @@
 Simple website to see if two given actors have worked together.
 
-HTML5, CSS, JS
+HTML5, CSS, JS, PHP
 
-Status: Waiting on TMDB API key.
+Status: Functional, but still needs some performance and UI enhancements.

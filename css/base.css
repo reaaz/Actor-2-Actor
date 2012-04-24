@@ -1,5 +1,12 @@
-﻿h1 { font: 2em Arial; text-align: center; }
-div#question , div#result { text-align: center; font: 1.5em Georgia; }
-#question input { font: 1em Georgia; }
-span.false { color: red; }
-input#askbutton { font: 1em Arial; background: #00cc00; }
+﻿/* Layout */
+body {
+  padding-top: 60px;
+}
+
+/* Text */
+.false {
+  color: red;
+}
+.true {
+  color: green;
+}

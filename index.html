@@ -1,29 +1,92 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Actor 2 Actor</title>
-		<link rel="stylesheet" href="./css/base.css" type="text/css" media="screen" />
-	</head>
-	<body>
-		<div id="header">
-			<h1>Actor 2 Actor</h1>
-		</div>
-		<div id="question">
-			<p>
-				<form action="">
-					<span class="inline-label">Did </span>
-					<input type="search" name="actor1" placeholder="Actor/Actress" autocomplete="off"/>
-					<span class="inline-label">ever work with </span>
-					<input type="search" name="actor2" placeholder="Actor/Actress" autocomplete="off"/>
-					<span class="inline-label">?</span><br />
-					<input id="askbutton" type="submit" value="Ask"/>
-				</form>
-			</p>
-		</div>
-		<div id="result">
-			<p>
-				<!-- <span class="false">No.</span> -->
-			</p>
-		</div>
-	</body>
+  <head>
+    <title>Actor 2 Actor</title>
+    <link rel="stylesheet" href="./css/base.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="./css/bootstrap.min.css" media="screen" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#response').empty();
+      });
+      // Execute the query and return the result
+      function ask()
+      {
+        var actor = $("#actor").val().trim(),
+        actor_compare = $("#actor_compare").val().trim();
+        // Make sure we have valid input
+        if(is_valid(actor) && is_valid(actor_compare))
+        {
+          // Valid input
+          var req = $.post(
+            'actor.php',
+            { actor: actor, actor_compare: actor_compare},
+            function(json) {
+              json = $.parseJSON(json);
+              display_results(json);
+            }
+          );
+        }
+        else
+        {
+          // Invalid input
+          alert('You must enter the names of two actors using only letters and spaces.');
+          return;
+        }
+      }
+      
+      // Validate the input
+      function is_valid(name)
+      {
+        return (name !== "" && /^[a-zA-Z ]+$/.test(name));
+      }
+      
+      function display_results(movies)
+      {
+        $('#results, #response').empty();
+        if(typeof movies === "undefined" || movies.length == 0)
+        {
+          $('#response')[0].innerHTML = '<h1 class="false">No.</h1>';
+        }
+        else
+        {
+          $('#response')[0].innerHTML = '<h1 class="true">Yes.</h1>';
+          var container = $('#results');
+          var fragment = document.createDocumentFragment();
+          $.each(movies, function(index, value){
+            var li = document.createElement('li');
+            li.innerHTML = value;
+            fragment.appendChild(li.cloneNode(true));
+          });
+          $('#results').append(fragment);
+        }
+        return;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Actor 2 Actor</h1>
+      <div class="pull-left">
+        <p>
+          <form class="well form-inline" action="" onsubmit="ask(); return false;">
+            <fieldset>
+              <label>Did </label>
+              <input id="actor" name="actor" placeholder="Actor" autocomplete="off"/>
+              <label>ever work with </label>
+              <input id="actor_compare" name="actor_compare" placeholder="Actor" autocomplete="off"/>
+              <label class="inline-label">?</label>
+            </fieldset>
+            <br />
+            <input class="btn btn-success btn-large" id="askbutton" type="submit" value="Ask" />
+          </form>
+        </p>
+        <p id="response">
+          <ul id="results">
+          </ul>
+        </p>
+      </div>
+    </div>
+  </body>
 </html>
