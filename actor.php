@@ -1,6 +1,6 @@
 ﻿<?php
   global $api_key;
-  $api_key = 'd269fbd71c790bdbebae323a284e9862';
+  $api_key = 'API_KEY';
   $actor = $_POST['actor'];
   $actor_compare = $_POST['actor_compare'];
   $actor_movies = getMoviesByActorID(getActorID($actor));
